@@ -1,0 +1,31 @@
+<html>
+<head>
+<title>TamilScript Demo</title>
+<script src="js/jquery.min.js"></script>
+<script src="js/tamilscript.js"></script>
+<script>
+ $(document).ready( function () { tamilscript.parse('#data','#results') } );
+</script>
+</head>
+<body>
+<form>
+<h2>source data : </h2><br />
+<textarea id='data' rows=10 cols=80>
+  function counter() {
+     var z = [1,2,3,4];
+     var sum = 0;
+     for( var i =0; i < z.length; i = i + 1 ) {
+	     sum = sum + z[i];
+     }
+     return sum;
+  }
+</textarea>
+<br />
+<h2> parsed output : </h2>
+<textarea id='results' rows=10 cols=80>
+# not computed
+</textarea>
+</form>
+</body>
+</html>
+
