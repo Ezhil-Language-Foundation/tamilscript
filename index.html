@@ -1,31 +1,54 @@
 <html>
 <head>
+<!-- 
+ * (C) 2015 Muthiah Annamalai
+ * This file is part of Tamilscript project.
+-->
+<meta charset="UTF-8">
 <title>TamilScript Demo</title>
 <script src="js/jquery.min.js"></script>
 <script src="js/tamilscript.js"></script>
+<script src="js/tamilscript_examples.js"></script>
 <script>
- $(document).ready( function () { tamilscript.parse('#data','#results') } );
+ function tamilscript_eval() { 
+    tamilscript.parse('#data','#results');
+    eval($('#results').val());
+ };
+ function load_examples() {
+    tamilscript_examples.load( $('#examples').val(),'#data' );
+ };
+ $(document).ready( function () { tamilscript_eval(); } );
 </script>
 </head>
 <body>
+<h2> Load example </h2><br />
 <form>
+<select id="examples">
+<option value="counter.ts">counter.ts</option>
+<option value="hello.ts">hello.ts</option>
+<option value="addition.ts">addition.ts</option>
+</select>|<input type='button' id='load' onClick='load_examples();' value='load' />
+|<input type='button' id='run' onClick='tamilscript_eval();' value='eval'>
 <h2>source data : </h2><br />
 <textarea id='data' rows=10 cols=80>
-  function counter() {
-     var z = [1,2,3,4];
-     var sum = 0;
-     for( var i =0; i < z.length; i = i + 1 ) {
+நிரல்பாகம் counter() {
+       மாரி z = [1,2,3,4];
+       மாரி sum = 0;
+       ஆக( மாரி i =0; i < z.length; i = i + 1 ) {
 	     sum = sum + z[i];
      }
-     return sum;
+     பின்கொடு sum;
   }
+alert( counter() )
 </textarea>
 <br />
 <h2> parsed output : </h2>
 <textarea id='results' rows=10 cols=80>
 # not computed
 </textarea>
+<textarea id='temp' rows=5 cols=80>
+# not computed
+</textarea>
 </form>
 </body>
 </html>
-
