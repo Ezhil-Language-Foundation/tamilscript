@@ -97,7 +97,6 @@ var tamilscript = (function() {
                         }
                         
                         // scan 1-line comment
-                        L_offset = i;
                         if( (i+1) < inString.length && inString[i] == '/' && inString[i+1] == '/' ) {
                             i = i + 2;
                             curr = '//';
@@ -105,16 +104,17 @@ var tamilscript = (function() {
                                 curr = curr + inString[i];
                                 i = i + 1;
                             }
-                            C = i - L_offset - curr.length; //beginning of token
+                            C = i - L_offset - curr.length + 1; //beginning of token
                             self.mTokens.push( [ curr, tamilscript.token.comment, L, C] );
                             L = L + 1;
                             curr = '';
                             continue;
                         }
+                        if ( inString[i] == '\n' )
+                            continue;
                         
-                        // scan 1-line strings
-                        L_offset = i;
-                        if ( inString[i] == '\'' || inString[i] == '"') {
+                        // scan 1-line string
+                        if ( inString[i] == '\'' || ['"',"'"].indexOf(inString[i]) >= 0 ) {
                             curr = inString[i];
                             quote = inString[i];
                             prev = inString[i];
@@ -124,8 +124,12 @@ var tamilscript = (function() {
                                 prev = inString[i];
                                 i = i + 1;
                             }
-                            C = i - L_offset - curr.length;
-                            self.mTokens.push( [ curr, tamilscript.token.identifier, L, C] );
+                            //take the ending quote
+                            curr = curr + inString[i];
+                            i = i + 1;
+                            //update column #
+                            C = i - L_offset - curr.length + 1;
+                            self.mTokens.push( [ curr, tamilscript.token.string, L, C] );
                             curr = '';
                         }
                         
@@ -216,8 +220,9 @@ var tamilscript = (function() {
                     }
                     
                     if ( tok_val.indexOf('.') == -1 ) {
-                        tok_val = prefix + tamilscript.spaces(Math.max(1,C-prev_C-tok_val.len)) + tok_val ;
+                        tok_val = prefix + tamilscript.spaces(Math.max(0,C-prev_C-tok_val.length)) + tok_val ;
                     }
+                    
                     console.log( tok_val )
                     output = output + tok_val;
                     itr = itr + 1;
